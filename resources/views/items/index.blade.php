@@ -73,6 +73,14 @@
             background-color: #45a049;
         }
 
+        .btn-delete {
+            background-color: #f44336;
+        }
+
+        .btn-delete:hover {
+            background-color: #da190b;
+        }
+
         .btn-add {
             display: inline-block;
             background: #e4572e;
@@ -86,14 +94,33 @@
         .btn-add:hover {
             background: #d14720;
         }
+
+        .message-success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px 20px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
-    <div class="header">V_Store - Item List</div>
-    <div class="title">Item List</div>
+
+    <div class="header">V_Store - Items</div>
+    <div class="title">Sale Items</div>
 
     <div class="container">
-        <a href="{{ route('items.create') }}" class="btn-add">Add New Item</a>
+
+        <!-- Hiển thị thông báo thành công -->
+        @if(session('success'))
+            <div class="message-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <!-- Nút thêm mới -->
+        <a href="{{ route('items.create') }}" class="btn-add">Add New</a>
+
         <table>
             <thead>
                 <tr>
@@ -107,7 +134,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($items as $item)
+                @forelse($items as $item)
                 <tr>
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->item_code }}</td>
@@ -117,9 +144,18 @@
                     <td>{{ $item->note }}</td>
                     <td>
                         <a href="{{ route('items.edit', $item->id) }}" class="btn btn-edit">Edit</a>
+                        <form action="{{ route('items.destroy', $item->id) }}" method="POST" style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this item?');">Delete</button>
+                        </form>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="7" style="text-align:center;">No items found.</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

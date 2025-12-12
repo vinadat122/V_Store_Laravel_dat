@@ -21,3 +21,4 @@ Route::get('/item-sale/edit/{id}', [ItemSaleController::class, 'edit'])->name('i
 
 
 Route::post('/item-sale/update/{id}', [ItemSaleController::class, 'update'])->name('items.update');
+Route::delete('/item-sale/destroy/{id}', [ItemSaleController::class, 'destroy'])->name('items.destroy');

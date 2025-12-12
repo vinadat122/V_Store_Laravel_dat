@@ -80,4 +80,12 @@ class ItemSaleController extends Controller
 
         return redirect()->route('items.index')->with('success', 'Item updated successfully.');
     }
+    public function destroy($id)
+    {
+        $item = ItemSale::findOrFail($id);
+        $item->delete();
+
+        return redirect()->route('items.index')->with('success', 'Item deleted successfully.');
+    }
+
 }
